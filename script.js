@@ -236,14 +236,18 @@ function addTeacher() {
 
     if (!validateTeacher(last, first)) return;
 
+    let formData = new FormData();
+    formData.append('lastname', last);
+    formData.append('firstname', first);
+    formData.append('middlename', mid);
+    formData.append('position', position);
+    formData.append('department', department);
+    formData.append('experience', exp);
+    formData.append('category', document.getElementById("category").value);
+
     fetch('api/add_teacher.php', {
         method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: new URLSearchParams({
-            lastname: last, firstname: first, middlename: mid,
-            position: position, department: department,
-            experience: exp, category: document.getElementById("category").value
-        })
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
