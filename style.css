@@ -15,7 +15,7 @@ body {
 ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
 ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
-/* ===== ОБНОВЛЁННЫЙ HEADER ===== */
+/* ===== HEADER ===== */
 .header {
     background: #ffffff;
     padding: 16px 32px;
@@ -115,6 +115,7 @@ body {
     color: #64748b;
 }
 
+/* ===== ФИЛЬТРЫ ===== */
 .filters-section {
     background: white;
     border-radius: 20px;
@@ -200,6 +201,7 @@ body {
     background: #d97706;
 }
 
+/* ===== ФОРМА ДОБАВЛЕНИЯ ===== */
 .form-card {
     background: white;
     border-radius: 20px;
@@ -299,14 +301,6 @@ body {
     margin-bottom: 6px;
 }
 
-.photo-input {
-    padding: 8px;
-    background: #fafbfc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    width: 100%;
-}
-
 .photo-preview {
     margin-top: 10px;
     width: 65px;
@@ -330,6 +324,7 @@ body {
     padding-top: 8px;
 }
 
+/* ===== КНОПКИ ===== */
 .btn {
     padding: 10px 22px;
     border: none;
@@ -373,12 +368,7 @@ body {
 }
 .btn-success:hover { background: #059669; }
 
-.btn-small {
-    padding: 6px 12px;
-    font-size: 12px;
-}
-
-/* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЭКСПОРТА ===== */
+/* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
 .dropdown-export {
     position: relative;
     display: inline-block;
@@ -424,7 +414,7 @@ body {
     color: #3b82f6;
 }
 
-/* ===== TOOLTIPS ===== */
+/* ===== ПОДСКАЗКИ (TOOLTIPS) ДЛЯ ВСЕХ ЭЛЕМЕНТОВ ===== */
 [tooltip] {
     position: relative;
     cursor: help;
@@ -436,11 +426,11 @@ body {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%) translateY(-8px);
-    padding: 8px 12px;
+    padding: 6px 12px;
     background: #1e293b;
     color: white;
     font-size: 12px;
-    border-radius: 8px;
+    border-radius: 6px;
     white-space: nowrap;
     z-index: 10000;
     opacity: 0;
@@ -470,26 +460,7 @@ body {
     transform: translateX(-50%) translateY(0);
 }
 
-/* Для элементов в фильтре - tooltip снизу */
-.filter-group [tooltip]::before {
-    bottom: auto;
-    top: 100%;
-    transform: translateX(-50%) translateY(8px);
-}
-
-.filter-group [tooltip]::after {
-    bottom: auto;
-    top: 100%;
-    transform: translateX(-50%) translateY(4px);
-    border-top-color: transparent;
-    border-bottom-color: #1e293b;
-}
-
-.filter-group [tooltip]:hover::before,
-.filter-group [tooltip]:hover::after {
-    transform: translateX(-50%) translateY(0);
-}
-
+/* ===== КАРТОЧКИ ПЕДАГОГОВ ===== */
 .teachers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -620,6 +591,7 @@ body {
     font-size: 14px;
 }
 
+/* ===== СТАТИСТИКА ===== */
 .stats {
     display: flex;
     flex-wrap: wrap;
@@ -656,6 +628,7 @@ body {
     color: #16a34a;
 }
 
+/* ===== ПОДВАЛ ===== */
 .footer {
     background: #1e293b;
     color: #cbd5e1;
@@ -691,6 +664,18 @@ body {
     margin-bottom: 16px;
 }
 
+.footer-email-link {
+    color: #f59e0b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.footer-email-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 .social-links-row {
     display: flex;
     gap: 16px;
@@ -719,6 +704,7 @@ body {
     filter: brightness(0) invert(1);
 }
 
+/* ===== МОДАЛЬНЫЕ ОКНА ===== */
 .modal {
     display: none;
     position: fixed;
@@ -903,7 +889,7 @@ body {
     100% { opacity: 0; transform: translateY(-350px) scale(1.5) rotate(360deg); }
 }
 
-/* ===== Стили для модалки редактирования расписания ===== */
+/* ===== РЕДАКТИРОВАНИЕ РАСПИСАНИЯ ===== */
 .schedule-edit-header {
     text-align: center;
     margin-bottom: 24px;
@@ -1082,7 +1068,18 @@ body {
     75% { transform: translateX(5px); }
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
+.avatar-placeholder {
+    width: 56px;
+    height: 56px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+/* ===== АДАПТИВ ===== */
 @media (max-width: 768px) {
     .header { padding: 12px 20px; }
     .main { padding: 20px 16px; }
@@ -1131,46 +1128,10 @@ body {
     transform: translateY(0);
 }
 
-.logout-icon {
-    font-size: 18px;
-    line-height: 1;
-}
-
-/* Адаптивность для кнопки выхода */
 @media (max-width: 768px) {
-    .header {
-        padding: 12px 16px;
-    }
-    
-    .logo-text h1 {
-        font-size: 18px;
-    }
-    
-    .logo-text p {
-        font-size: 11px;
-    }
-    
-    .btn-logout {
-        font-size: 13px;
-        padding: 8px 16px;
-    }
-    
-    .logout-icon {
-        font-size: 16px;
-    }
-    
-    .header-buttons {
-        width: 100%;
-        justify-content: space-between;
-    }
-}
-.avatar-placeholder {
-    width: 56px;
-    height: 56px;
-    background: #e2e8f0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
+    .header { padding: 12px 16px; }
+    .logo-text h1 { font-size: 18px; }
+    .logo-text p { font-size: 11px; }
+    .btn-logout { font-size: 13px; padding: 8px 16px; }
+    .header-buttons { width: 100%; justify-content: space-between; }
 }

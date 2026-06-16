@@ -1,15 +1,14 @@
 <?php
 session_start();
 
-// Проверка авторизации — если не авторизован, отправляем на логин
+// Проверка авторизации
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
-// ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ
 require_once 'config.php'; 
 
-// ===== ЭКСПОРТ ПЕДАГОГОВ В CSV (из базы данных) =====
+// ===== ЭКСПОРТ ПЕДАГОГОВ В CSV =====
 if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_GET['type'] == 'teachers') {
     require_once 'config.php';
     
@@ -47,7 +46,7 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
     <div class="header-content">
         <div class="logo">
             <div class="logo-icon">
-                <img src="images/logo.png" alt="Логотип" class="logo-img">
+                <img src="images/logo.png" alt="Логотип" class="logo-img" tooltip="Герб Дворца детского творчества">
             </div>
             <div class="logo-text">
                 <h1>ДДЮТ г. Белоярский</h1>
@@ -56,13 +55,15 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
         </div>
         <div class="header-buttons" style="display:flex; gap:12px; align-items:center;">
             <div class="dropdown-export">
-                <button class="btn btn-outline" id="exportDropdownBtn">📎 Экспорт ▼</button>
+                <button class="btn btn-outline" id="exportDropdownBtn" tooltip="Экспорт данных в CSV">
+                    📎 Экспорт ▼
+                </button>
                 <div class="dropdown-export-menu" id="exportDropdownMenu">
-                    <a href="#" data-export="teachers">📋 Экспорт педагогов CSV</a>
-                    <a href="#" data-export="schedule">📅 Экспорт расписания CSV</a>
+                    <a href="#" data-export="teachers" tooltip="Скачать список всех педагогов">📋 Экспорт педагогов CSV</a>
+                    <a href="#" data-export="schedule" tooltip="Скачать расписание всех педагогов">📅 Экспорт расписания CSV</a>
                 </div>
             </div>
-            <a href="logout.php" class="btn btn-logout" onclick="return confirm('Выйти из системы?');">
+            <a href="logout.php" class="btn btn-logout" onclick="return confirm('Выйти из системы?');" tooltip="Завершить сессию">
                 <span>Выйти (<?= htmlspecialchars($_SESSION['login'] ?? 'user') ?>)</span>
             </a>
         </div>
@@ -79,11 +80,11 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
         <div class="filter-row">
             <div class="filter-group">
                 <label>🔎 ПОИСК</label>
-                <input type="text" id="searchInput" placeholder="Поиск по имени...">
+                <input type="text" id="searchInput" placeholder="Поиск по имени..." tooltip="Введите фамилию, имя или отчество">
             </div>
             <div class="filter-group">
                 <label>🗃️ СПЕЦИАЛЬНОСТЬ</label>
-                <select id="deptFilterSelect">
+                <select id="deptFilterSelect" tooltip="Фильтр по направлению деятельности">
                     <option value="all">Все специальности</option>
                     <option value="Художественное">Художественное</option>
                     <option value="Социально-педагогическое">Социально-педагогическое</option>
@@ -94,7 +95,7 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
             </div>
             <div class="filter-group">
                 <label>🏆 КАТЕГОРИЯ</label>
-                <select id="catFilterSelect">
+                <select id="catFilterSelect" tooltip="Фильтр по квалификационной категории">
                     <option value="all">Все категории</option>
                     <option value="Высшая">Высшая</option>
                     <option value="Первая">Первая</option>
@@ -103,13 +104,15 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
             </div>
             <div class="filter-group">
                 <label>&nbsp;</label>
-                <button id="sortBtn" class="btn btn-secondary" style="width:100%;">
+                <button id="sortBtn" class="btn btn-secondary" style="width:100%;" tooltip="Сортировка по фамилии">
                     ↕: <span id="sortText">А→Я</span>
                 </button>
             </div>
             <div class="filter-group filter-edit-btn">
                 <label>&nbsp;</label>
-                <button class="btn-edit-mode" id="toggleEditModeBtn">✏️ Режим редактирования</button>
+                <button class="btn-edit-mode" id="toggleEditModeBtn" tooltip="Включить/выключить режим редактирования">
+                    ✏️ Режим редактирования
+                </button>
             </div>
         </div>
     </div>
@@ -117,19 +120,49 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
     <div id="editForm" class="form-card" style="display: none;">
         <div class="form-header"><span>➕</span><h3 id="formTitle">Добавление педагога</h3></div>
         <div class="form-grid">
-            <div class="input-group"><label>Фамилия *</label><input type="text" id="lastname" maxlength="25"></div>
-            <div class="input-group"><label>Имя *</label><input type="text" id="firstname" maxlength="25"></div>
-            <div class="input-group"><label>Отчество</label><input type="text" id="middlename" maxlength="25"></div>
-            <div class="input-group"><label>Должность</label><input type="text" id="position" maxlength="25"></div>
-            <div class="input-group"><label>Объединение</label><input type="text" id="department" maxlength="25"></div>
-            <div class="input-group"><label>Стаж (лет)</label><input type="text" id="experience" maxlength="2" inputmode="numeric"></div>
-            <div class="input-group"><label>Категория</label><select id="category"><option>Без категории</option><option>Первая</option><option>Высшая</option></select></div>
-            <div class="photo-upload"><div class="photo-label">📸 Фото</div><input type="file" id="photoFile" accept="image/*"><div class="photo-preview" id="photoPreview"></div><input type="hidden" id="photoPath"></div>
+            <div class="input-group">
+                <label>Фамилия *</label>
+                <input type="text" id="lastname" maxlength="25" tooltip="Только буквы, пробелы и дефисы">
+            </div>
+            <div class="input-group">
+                <label>Имя *</label>
+                <input type="text" id="firstname" maxlength="25" tooltip="Только буквы, пробелы и дефисы">
+            </div>
+            <div class="input-group">
+                <label>Отчество</label>
+                <input type="text" id="middlename" maxlength="25" tooltip="Только буквы, пробелы и дефисы">
+            </div>
+            <div class="input-group">
+                <label>Должность</label>
+                <input type="text" id="position" maxlength="25" tooltip="Только буквы, пробелы и дефисы">
+            </div>
+            <div class="input-group">
+                <label>Объединение</label>
+                <input type="text" id="department" maxlength="25" tooltip="Только буквы, пробелы и дефисы">
+            </div>
+            <div class="input-group">
+                <label>Стаж (лет)</label>
+                <input type="text" id="experience" maxlength="2" inputmode="numeric" tooltip="Только цифры, от 1 до 99">
+            </div>
+            <div class="input-group">
+                <label>Категория</label>
+                <select id="category" tooltip="Выберите квалификационную категорию">
+                    <option>Без категории</option>
+                    <option>Первая</option>
+                    <option>Высшая</option>
+                </select>
+            </div>
+            <div class="photo-upload">
+                <div class="photo-label">📸 Фото</div>
+                <input type="file" id="photoFile" accept="image/*" tooltip="Загрузите фотографию педагога">
+                <div class="photo-preview" id="photoPreview"></div>
+                <input type="hidden" id="photoPath">
+            </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-primary" id="addBtn">➕ Добавить</button>
-            <button class="btn btn-secondary" id="editBtn" style="display:none;">💾 Сохранить</button>
-            <button class="btn btn-secondary" id="cancelBtn" style="display:none;">❌ Отмена</button>
+            <button class="btn btn-primary" id="addBtn" tooltip="Добавить нового педагога">➕ Добавить</button>
+            <button class="btn btn-secondary" id="editBtn" style="display:none;" tooltip="Сохранить изменения">💾 Сохранить</button>
+            <button class="btn btn-secondary" id="cancelBtn" style="display:none;" tooltip="Отменить редактирование">❌ Отмена</button>
         </div>
     </div>
 
@@ -147,18 +180,18 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
         <div class="footer-col">
             <p>© 2026 Дворец детского (юношеского) творчества г. Белоярский</p>
             <p>628163, ХМАО-Югра, г. Белоярский, ул. Лысюка, д.4</p>
-            <p>📞 8 (34670) 5-15-47 | ✉️ info@ddutbel86.ru</p>
+            <p>📞 8 (34670) 5-15-47 | ✉️ <a href="mailto:info@ddutbel86.ru" class="footer-email-link" tooltip="Написать письмо на почту">info@ddutbel86.ru</a></p>
         </div>
         <div class="footer-col">
             <h4>Социальные сети</h4>
             <div class="social-links-row">
-                <a href="https://ok.ru/ddyutg.bel" target="_blank" class="social-link-icon">
+                <a href="https://ok.ru/ddyutg.bel" target="_blank" class="social-link-icon" tooltip="Одноклассники">
                     <img src="images/ok.png" alt="Одноклассники" class="social-icon">
                 </a>
-                <a href="https://vk.com/ddutbel_86" target="_blank" class="social-link-icon">
+                <a href="https://vk.com/ddutbel_86" target="_blank" class="social-link-icon" tooltip="ВКонтакте">
                     <img src="images/vk.png" alt="ВКонтакте" class="social-icon">
                 </a>
-                <a href="https://max.ru/id8611005670_gos" target="_blank" class="social-link-icon">
+                <a href="https://max.ru/id8611005670_gos" target="_blank" class="social-link-icon" tooltip="Max">
                     <img src="images/max.png" alt="Max" class="social-icon">
                 </a>
             </div>
@@ -168,14 +201,14 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
 
 <div id="teacherModal" class="modal">
     <div class="modal-content">
-        <button class="modal-close" id="closeModalBtn">✕</button>
+        <button class="modal-close" id="closeModalBtn" tooltip="Закрыть">✕</button>
         <div id="modalContent"></div>
     </div>
 </div>
 
 <div id="editScheduleModal" class="modal">
     <div class="modal-content modal-schedule-edit">
-        <button class="modal-close" id="closeScheduleModalBtn">✕</button>
+        <button class="modal-close" id="closeScheduleModalBtn" tooltip="Закрыть">✕</button>
         <div id="scheduleEditContent"></div>
     </div>
 </div>
