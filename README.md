@@ -4,6 +4,7 @@
 
 - **Репозиторий проекта:** [https://github.com/ZarinaGap/employee_journal](https://github.com/ZarinaGap/employee_journal)
 - **Локальный запуск:** `http://localhost/Employee_Logbook_and_Schedule/login.php`
+- **Макет:** `https://www.figma.com/design/eIkai94bA4nc1ALlSd1Is3/Employee_Logbook_and_Schedule?node-id=0-1&p=f&t=EOi3RKXDVboW7hnA-0`
 
 > ⚠️ **Важно:** Приложение работает только на локальном сервере (XAMPP).  
 > GitHub Pages не поддерживает PHP и базы данных. Чтобы открыть сайт, запусти XAMPP и перейди по ссылке выше.
