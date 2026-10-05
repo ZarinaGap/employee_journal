@@ -4,7 +4,7 @@ const storedVersion = localStorage.getItem('dataVersion');
 if (storedVersion !== DATA_VERSION) {
     localStorage.clear();
     localStorage.setItem('dataVersion', DATA_VERSION);
-    console.log('🔄 Данные обновлены до версии ' + DATA_VERSION);
+    console.log('Данные обновлены до версии ' + DATA_VERSION);
 }
 
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
@@ -92,7 +92,7 @@ function setupInputValidation() {
         const input = inputs[key];
         input?.addEventListener("input", function() {
             let v = this.value;
-            if (v.length >= MAX_CHARS) showWarning(this, `⚠️ Лимит ${MAX_CHARS} символов!`);
+            if (v.length >= MAX_CHARS) showWarning(this, `Лимит ${MAX_CHARS} символов!`);
             else hideWarning(this);
             if (v && !nameRegex.test(v)) {
                 showError(this, "✖️ Только буквы!");
@@ -166,16 +166,15 @@ function renderGrid() {
 
     let container = document.getElementById("teachersGrid");
     if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state"><p>🔎 Педагоги не найдены</p></div>';
+        container.innerHTML = '<div class="empty-state"><p>🔎Педагоги не найдены</p></div>';
     } else {
         container.innerHTML = filtered.map(t => {
-           let photoHtml = '<div class="avatar-placeholder">👤</div>';
-if (t.photoData) {
-    photoHtml = `<img src="${t.photoData}" alt="фото">`;
-} else if (t.photo) {
-    // Добавляем обработчик ошибки: если фото не загрузилось — показываем иконку
-    photoHtml = `<img src="uploads/${t.photo}" alt="фото" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar-placeholder\'>👤</div>';">`;
-}
+            let photoHtml = '<div class="avatar-placeholder">👤</div>';
+            if (t.photoData) {
+                photoHtml = `<img src="${t.photoData}" alt="фото">`;
+            } else if (t.photo) {
+                photoHtml = `<img src="uploads/${t.photo}" alt="фото" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'avatar-placeholder\'>👤</div>';">`;
+            }
             return `
                 <div class="teacher-card" data-id="${t.id}" onclick="showTeacherModal(${t.id})">
                     <div class="card-header">
@@ -255,7 +254,7 @@ function addTeacher() {
             loadTeachersFromDB();
             clearForm();
             showFirework();
-            alert(`✔️ Педагог ${last} ${first} добавлен!`);
+            alert(`Педагог ${last} ${first} добавлен!`);
         } else {
             alert('Ошибка: ' + (data.error || 'неизвестная ошибка'));
         }
@@ -291,7 +290,7 @@ function editTeacher() {
         if (data.success) {
             loadTeachersFromDB();
             clearForm();
-            alert(`✔️ Педагог ${last} ${first} обновлён!`);
+            alert(`Педагог ${last} ${first} обновлён!`);
         } else {
             alert('Ошибка: ' + (data.error || 'неизвестная ошибка'));
         }
@@ -301,14 +300,14 @@ function editTeacher() {
 
 // ===== УДАЛЕНИЕ ПЕДАГОГА =====
 function deleteTeacher(id) {
-    let t = teachersList.find(t => t.id === id);
-    if (t && confirm(`✖️ Удалить ${t.lastname} ${t.firstname}?`)) {
+    let t = teachersList.find(t => t.id == id);
+    if (t && confirm(`Удалить ${t.lastname} ${t.firstname}?`)) {
         fetch(`api/delete_teacher.php?id=${id}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     loadTeachersFromDB();
-                    alert(`🗑️ Педагог удалён`);
+                    alert(`Педагог удалён`);
                 } else {
                     alert('Ошибка удаления');
                 }
@@ -336,7 +335,7 @@ function isTimeValid(start, end) {
 }
 
 async function showTeacherModal(id) {
-    let t = teachersList.find(t => t.id === id);
+    let t = teachersList.find(t => t.id == id);
     if (!t) return;
 
     scheduleList = await loadScheduleFromDB(id);
@@ -356,7 +355,7 @@ async function showTeacherModal(id) {
     teacherSchedule.forEach(s => { if (byDay[s.day]) byDay[s.day].push(s); });
 
     let scheduleHtml = `
-        <div class="schedule-title">📅 РАСПИСАНИЕ ЗАНЯТИЙ</div>
+        <div class="schedule-title">РАСПИСАНИЕ ЗАНЯТИЙ</div>
         <div class="schedule-days">
             ${days.map(d => `
                 <div class="schedule-day">
@@ -378,12 +377,12 @@ async function showTeacherModal(id) {
             <div class="modal-info-item"><div class="modal-info-label">Стаж</div><div class="modal-info-value">${t.experience}л</div></div>
             <div class="modal-info-item"><div class="modal-info-label">Категория</div><div class="modal-info-value">${escapeHtml(catDisplay)}</div></div>
         </div>
-        ${teacherSchedule.length > 0 ? scheduleHtml : '<div style="text-align:center;padding:40px;background:#f8fafc;border-radius:16px;margin:20px 0;"><p style="color:#94a3b8;">📅 Расписание отсутствует</p></div>'}
+        ${teacherSchedule.length > 0 ? scheduleHtml : '<div style="text-align:center;padding:40px;background:#f8fafc;border-radius:16px;margin:20px 0;"><p style="color:#94a3b8;">Расписание отсутствует</p></div>'}
         ${isEditMode ? `
             <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="editFromModal(${t.id}); closeModal();">✏️ Редактировать данные</button>
-                <button class="btn btn-primary" onclick="openEditScheduleModal(${t.id})">📅 Редактировать расписание</button>
-                <button class="btn btn-danger" onclick="deleteTeacher(${t.id}); closeModal();">🗑️ Удалить</button>
+                <button class="btn btn-secondary" onclick="editFromModal(${t.id}); closeModal();">Редактировать данные</button>
+                <button class="btn btn-primary" onclick="openEditScheduleModal(${t.id})">Редактировать расписание</button>
+                <button class="btn btn-danger" onclick="deleteTeacher(${t.id}); closeModal();">Удалить</button>
             </div>
         ` : '<div style="text-align:center;padding:16px;color:#94a3b8;font-size:12px;border-top:1px solid #e2e8f0;margin-top:24px;">💡 Для редактирования включите режим редактирования</div>'}
     `;
@@ -391,7 +390,7 @@ async function showTeacherModal(id) {
 }
 
 function editFromModal(id) {
-    let t = teachersList.find(t => t.id === id);
+    let t = teachersList.find(t => t.id == id);
     if (t) {
         document.getElementById("lastname").value = t.lastname;
         document.getElementById("firstname").value = t.firstname;
@@ -405,7 +404,7 @@ function editFromModal(id) {
             currentPhotoData = t.photoData;
         }
         currentEditId = id;
-        document.querySelector(".form-header h3").innerHTML = "✏️ Редактирование педагога";
+        document.querySelector(".form-header h3").innerHTML = "Редактирование педагога";
         document.getElementById("addBtn").style.display = "none";
         document.getElementById("editBtn").style.display = "inline-flex";
         document.getElementById("cancelBtn").style.display = "inline-flex";
@@ -421,7 +420,7 @@ function closeModal() {
 // ===== РЕДАКТИРОВАНИЕ РАСПИСАНИЯ =====
 async function openEditScheduleModal(teacherId) {
     editingScheduleTeacherId = teacherId;
-    let t = teachersList.find(t => t.id === teacherId);
+    let t = teachersList.find(t => t.id == teacherId);
     if (!t) return;
     
     scheduleList = await loadScheduleFromDB(teacherId);
@@ -469,12 +468,12 @@ function renderScheduleEditModal(teacher) {
     }).join("");
 
     document.getElementById("scheduleEditContent").innerHTML = `
-        <div class="schedule-edit-header"><h2>📅 Редактирование расписания</h2><p>${escapeHtml(teacher.lastname)} ${escapeHtml(teacher.firstname)} ${escapeHtml(teacher.middlename || "")}</p></div>
+        <div class="schedule-edit-header"><h2>Редактирование расписания</h2><p>${escapeHtml(teacher.lastname)} ${escapeHtml(teacher.firstname)} ${escapeHtml(teacher.middlename || "")}</p></div>
         <div class="schedule-edit-days">${daysHtml}</div>
         <div class="schedule-edit-actions">
-            <button class="btn btn-success" onclick="saveScheduleChanges()">💾 Сохранить расписание</button>
-            <button class="btn btn-secondary" onclick="closeScheduleEditModal()">✖️ Отмена</button>
-            <button class="btn btn-danger" onclick="clearAllSchedule()">🗑️ Очистить всё</button>
+            <button class="btn btn-success" onclick="saveScheduleChanges()">Сохранить расписание</button>
+            <button class="btn btn-secondary" onclick="closeScheduleEditModal()">Отмена</button>
+            <button class="btn btn-danger" onclick="clearAllSchedule()">Очистить всё</button>
         </div>
     `;
 }
@@ -493,7 +492,7 @@ async function addScheduleItem(dayIdx, dayName) {
     if (!time) { alert("✖️ Введите время!"); timeInput.focus(); return; }
     if (!validateTimeFormat(time)) { alert("✖️ Формат: 14.00-14.40"); timeInput.classList.add("time-input-error"); timeInput.focus(); setTimeout(() => timeInput.classList.remove("time-input-error"), 2000); return; }
     let [start, end] = time.split(/[-–]/);
-    if (start === end) { alert("✖️ Время начала и конца не могут совпадать!"); timeInput.classList.add("time-input-error"); return; }
+    if (start === end) { alert("Время начала и конца не могут совпадать!"); timeInput.classList.add("time-input-error"); return; }
     if (!isTimeValid(start, end)) { alert("✖️ Начало должно быть раньше конца!"); timeInput.classList.add("time-input-error"); return; }
     if (!lesson) { alert("✖️ Введите название!"); lessonInput.focus(); return; }
 
@@ -512,7 +511,7 @@ async function addScheduleItem(dayIdx, dayName) {
         if (data.success) {
             scheduleList = await loadScheduleFromDB(editingScheduleTeacherId);
             tempSchedule = [...scheduleList];
-            let t = teachersList.find(t => t.id === editingScheduleTeacherId);
+            let t = teachersList.find(t => t.id == editingScheduleTeacherId);
             renderScheduleEditModal(t);
             timeInput.value = '';
             lessonInput.value = '';
@@ -539,7 +538,7 @@ async function removeScheduleItem(dayIdx, itemIdx) {
                 if (data.success) {
                     scheduleList = await loadScheduleFromDB(editingScheduleTeacherId);
                     tempSchedule = [...scheduleList];
-                    let t = teachersList.find(t => t.id === editingScheduleTeacherId);
+                    let t = teachersList.find(t => t.id == editingScheduleTeacherId);
                     renderScheduleEditModal(t);
                 } else {
                     alert('Ошибка удаления');
@@ -550,7 +549,7 @@ async function removeScheduleItem(dayIdx, itemIdx) {
         } else {
             let removeIdx = tempSchedule.findIndex(s => s.day === itemToRemove.day && s.time === itemToRemove.time && s.lesson === itemToRemove.lesson);
             if (removeIdx !== -1) tempSchedule.splice(removeIdx, 1);
-            let t = teachersList.find(t => t.id === editingScheduleTeacherId);
+            let t = teachersList.find(t => t.id == editingScheduleTeacherId);
             renderScheduleEditModal(t);
         }
     }
@@ -562,18 +561,18 @@ async function saveScheduleChanges() {
         scheduleList = await loadScheduleFromDB(editingScheduleTeacherId);
         showTeacherModal(editingScheduleTeacherId);
     }
-    alert("✔️ Расписание сохранено!");
+    alert("Расписание сохранено!");
 }
 
 async function clearAllSchedule() {
-    if (confirm("🗑️ Удалить все занятия?")) {
+    if (confirm("Удалить все занятия?")) {
         try {
             const response = await fetch(`api/clear_schedule.php?teacher_id=${editingScheduleTeacherId}`);
             const data = await response.json();
             if (data.success) {
                 scheduleList = await loadScheduleFromDB(editingScheduleTeacherId);
                 tempSchedule = [];
-                let t = teachersList.find(t => t.id === editingScheduleTeacherId);
+                let t = teachersList.find(t => t.id == editingScheduleTeacherId);
                 renderScheduleEditModal(t);
             } else {
                 alert('Ошибка очистки расписания');
@@ -588,7 +587,7 @@ function setupPhotoUpload() {
     document.getElementById("photoFile")?.addEventListener("change", function(e) {
         let file = e.target.files[0];
         if (file) {
-            if (!file.type.startsWith('image/')) { alert('⚠️ Выберите файл изображения!'); return; }
+            if (!file.type.startsWith('image/')) { alert('Выберите файл изображения!'); return; }
             let reader = new FileReader();
             reader.onload = function(ev) {
                 currentPhotoData = ev.target.result;
@@ -622,11 +621,11 @@ function toggleEditMode() {
     let btn = document.getElementById("toggleEditModeBtn");
     if (isEditMode) {
         form.style.display = "block";
-        btn.textContent = "👀 Режим просмотра";
+        btn.textContent = "Режим просмотра";
         btn.classList.add("active");
     } else {
         form.style.display = "none";
-        btn.textContent = "✏️ Режим редактирования";
+        btn.textContent = "Режим редактирования";
         btn.classList.remove("active");
         clearForm();
     }
@@ -708,7 +707,7 @@ async function exportScheduleCSV() {
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
     
-    alert(`✔️ Расписание экспортировано!`);
+    alert(`Расписание экспортировано!`);
 }
 
 // ===== ИНИЦИАЛИЗАЦИЯ =====
