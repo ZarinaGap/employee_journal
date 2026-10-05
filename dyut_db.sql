@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1
--- Время создания: Июн 04 2026 г., 11:05
+-- Хост: 127.0.0.1:3306
+-- Время создания: Сен 23 2026 г., 06:47
 -- Версия сервера: 10.4.32-MariaDB
--- Версия PHP: 8.2.12
+-- Версия PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -757,6 +757,25 @@ INSERT INTO `teachers` (`id`, `lastname`, `firstname`, `middlename`, `position`,
 (32, 'Титеева', 'Лариса', 'Рамазановна', 'педагог доп. образования', 'Беспроводные связи', 14, 'Без категории', 'Техническое', NULL),
 (33, 'Трапезникова', 'Галина', 'Николаевна', 'педагог доп. образования', 'Юный шахматист', 41, 'Высшая', 'Техническое', 'Трапезникова Галина Николаевна.jpg');
 
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`) VALUES
+(2, 'admin', '$2y$10$fzjeSdIDEowUQNZx/fcj9.fwnGVjgmIAAYxtVH4uhTcLUQSzudmXq');
+
 --
 -- Индексы сохранённых таблиц
 --
@@ -775,6 +794,13 @@ ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `login` (`login`);
+
+--
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
@@ -789,6 +815,12 @@ ALTER TABLE `schedule`
 --
 ALTER TABLE `teachers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT для таблицы `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
