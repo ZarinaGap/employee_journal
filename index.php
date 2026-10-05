@@ -48,19 +48,25 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
             <div class="logo-icon">
                 <img src="images/logo.png" alt="Логотип" class="logo-img" tooltip="Герб Дворца детского творчества">
             </div>
-            <div class="logo-text">
-                <h1>ДДЮТ г. Белоярский</h1>
-                <p>Ханты-Мансийский автономный округ - Югра, г. Белоярский, ул. Лысюка, д.4</p>
-            </div>
+           <div class="logo-text">
+    <h1>ДДЮТ г. Белоярский</h1>
+    <p>Ханты-Мансийский автономный округ - Югра, г. Белоярский, ул. Лысюка, д.4</p>
+    <div class="color-strip">
+        <span class="c-blue"></span>
+        <span class="c-green"></span>
+        <span class="c-red"></span>
+        <span class="c-yellow"></span>
+    </div>
+</div>
         </div>
         <div class="header-buttons" style="display:flex; gap:12px; align-items:center;">
             <div class="dropdown-export">
                 <button class="btn btn-outline" id="exportDropdownBtn" tooltip="Экспорт данных в CSV">
-                    📎 Экспорт ▼
+                    Экспорт ▼
                 </button>
                 <div class="dropdown-export-menu" id="exportDropdownMenu">
-                    <a href="#" data-export="teachers" tooltip="Скачать список всех педагогов">📋 Экспорт педагогов CSV</a>
-                    <a href="#" data-export="schedule" tooltip="Скачать расписание всех педагогов">📅 Экспорт расписания CSV</a>
+                    <a href="#" data-export="teachers" tooltip="Скачать список всех педагогов">Экспорт педагогов CSV</a>
+                    <a href="#" data-export="schedule" tooltip="Скачать расписание всех педагогов">Экспорт расписания CSV</a>
                 </div>
             </div>
             <a href="logout.php" class="btn btn-logout" onclick="return confirm('Выйти из системы?');" tooltip="Завершить сессию">
@@ -79,11 +85,11 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
     <div class="filters-section">
         <div class="filter-row">
             <div class="filter-group">
-                <label>🔎 ПОИСК</label>
+                <label>🔎 </label>
                 <input type="text" id="searchInput" placeholder="Поиск по имени..." tooltip="Введите фамилию, имя или отчество">
             </div>
             <div class="filter-group">
-                <label>🗃️ СПЕЦИАЛЬНОСТЬ</label>
+                <label>СПЕЦИАЛЬНОСТЬ</label>
                 <select id="deptFilterSelect" tooltip="Фильтр по направлению деятельности">
                     <option value="all">Все специальности</option>
                     <option value="Художественное">Художественное</option>
@@ -94,7 +100,7 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
                 </select>
             </div>
             <div class="filter-group">
-                <label>🏆 КАТЕГОРИЯ</label>
+                <label>КАТЕГОРИЯ</label>
                 <select id="catFilterSelect" tooltip="Фильтр по квалификационной категории">
                     <option value="all">Все категории</option>
                     <option value="Высшая">Высшая</option>
@@ -111,14 +117,14 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
             <div class="filter-group filter-edit-btn">
                 <label>&nbsp;</label>
                 <button class="btn-edit-mode" id="toggleEditModeBtn" tooltip="Включить/выключить режим редактирования">
-                    ✏️ Режим редактирования
+                    Режим редактирования
                 </button>
             </div>
         </div>
     </div>
 
     <div id="editForm" class="form-card" style="display: none;">
-        <div class="form-header"><span>➕</span><h3 id="formTitle">Добавление педагога</h3></div>
+        <div class="form-header"><span></span><h3 id="formTitle">Добавление педагога</h3></div>
         <div class="form-grid">
             <div class="input-group">
                 <label>Фамилия *</label>
@@ -153,25 +159,24 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
                 </select>
             </div>
             <div class="photo-upload">
-                <div class="photo-label">📸 Фото</div>
+                <div class="photo-label">Фото</div>
                 <input type="file" id="photoFile" accept="image/*" tooltip="Загрузите фотографию педагога">
                 <div class="photo-preview" id="photoPreview"></div>
                 <input type="hidden" id="photoPath">
             </div>
         </div>
         <div class="form-actions">
-            <button class="btn btn-primary" id="addBtn" tooltip="Добавить нового педагога">➕ Добавить</button>
-            <button class="btn btn-secondary" id="editBtn" style="display:none;" tooltip="Сохранить изменения">💾 Сохранить</button>
-            <button class="btn btn-secondary" id="cancelBtn" style="display:none;" tooltip="Отменить редактирование">❌ Отмена</button>
+            <button class="btn btn-primary" id="addBtn" tooltip="Добавить нового педагога">Добавить</button>
+            <button class="btn btn-secondary" id="editBtn" style="display:none;" tooltip="Сохранить изменения">Сохранить</button>
+            <button class="btn btn-secondary" id="cancelBtn" style="display:none;" tooltip="Отменить редактирование">Отмена</button>
         </div>
     </div>
 
     <div id="teachersGrid" class="teachers-grid"></div>
-
     <div class="stats">
-        <div class="stat stat-total">👥 Всего: <span id="totalCount">0</span></div>
-        <div class="stat stat-high">🏆 Высшая: <span id="highestCount">0</span></div>
-        <div class="stat stat-first">⭐ Первая: <span id="firstCount">0</span></div>
+        <div class="stat stat-total">Всего: <span id="totalCount">0</span></div>
+        <div class="stat stat-high">Высшая: <span id="highestCount">0</span></div>
+        <div class="stat stat-first">Первая: <span id="firstCount">0</span></div>
     </div>
 </main>
 
@@ -180,7 +185,7 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
         <div class="footer-col">
             <p>© 2026 Дворец детского (юношеского) творчества г. Белоярский</p>
             <p>628163, ХМАО-Югра, г. Белоярский, ул. Лысюка, д.4</p>
-            <p>📞 8 (34670) 5-15-47 | ✉️ <a href="mailto:info@ddutbel86.ru" class="footer-email-link" tooltip="Написать письмо на почту">info@ddutbel86.ru</a></p>
+            <p> Тел:8 (34670) 5-15-47 | ✉️ <a href="mailto:info@ddutbel86.ru" class="footer-email-link" tooltip="Написать письмо на почту">info@ddutbel86.ru</a></p>
         </div>
         <div class="footer-col">
             <h4>Социальные сети</h4>
@@ -201,14 +206,14 @@ if (isset($_GET['export']) && $_GET['export'] == 1 && isset($_GET['type']) && $_
 
 <div id="teacherModal" class="modal">
     <div class="modal-content">
-        <button class="modal-close" id="closeModalBtn" tooltip="Закрыть">✕</button>
+        <button class="modal-close" id="closeModalBtn">✕</button>
         <div id="modalContent"></div>
     </div>
 </div>
 
 <div id="editScheduleModal" class="modal">
     <div class="modal-content modal-schedule-edit">
-        <button class="modal-close" id="closeScheduleModalBtn" tooltip="Закрыть">✕</button>
+        <button class="modal-close" id="closeScheduleModalBtn">✕</button>
         <div id="scheduleEditContent"></div>
     </div>
 </div>
